@@ -24,11 +24,9 @@ export const movieSlice = createSlice({
   },
   reducers: {
     setPage: (state, action) => {
-      console.log('setpage',action);
       state.pageNo = action.payload;
     },
     setLoader: (state, action) => {
-      console.log('setloader',action);
       state.loading = action.payload
     }
   },
@@ -37,13 +35,9 @@ export const movieSlice = createSlice({
     builder.addCase(fetchMovies.fulfilled, (state, action) => {
       // Add user to the state array
       //   state.movieList = action.payload;
-      console.log(current(state));
-      console.log('action', action);
       if (current(state).pageNo <= 1) {
-        console.log('in if');
         state.movieList = [...action.payload.results];
       } else {
-        console.log('in else');
         state.movieList.push(...action.payload.results);
       }
       state.pageNo = action.payload.page

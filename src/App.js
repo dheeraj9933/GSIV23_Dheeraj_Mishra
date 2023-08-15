@@ -16,7 +16,6 @@ function App() {
   const list = useSelector(state => state.movieList.movieList);
   const page = useSelector(state => state.movieList.pageNo);
   const isLoading = useSelector(state => state.movieList.loading);
-  console.log(useSelector(state => state.movieList));
   const getConfig = () => {
     axios
       .get(
@@ -48,7 +47,9 @@ function App() {
         1
       }`;
       dispatch(fetchMovies(url));
-    } 
+    } else {
+      getData()
+    }
   }
 
   const handleScroll = () => {
