@@ -1,15 +1,22 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import MovieList from './components/MovieList';
 import './App.scss';
+import MovieDetail from './pages/MovieDetail';
+import Header from './components/Header';
+import { fetchMovies, setPage, setLoader } from './reducers/MovieReducers';
+import { useDispatch, useSelector } from 'react-redux';
 
 function App() {
-  const [list, setList] = useState([]);
-  const [page, setPage] = useState(0);
   const [search, setSearch] = useState('');
   const [config, setConfig] = useState({});
-  const [isLoading, setisLoading] = useState(false);
+  const dispatch = useDispatch();
+  const list = useSelector(state => state.movieList.movieList);
+  const page = useSelector(state => state.movieList.pageNo);
+  const isLoading = useSelector(state => state.movieList.loading);
+  console.log(useSelector(state => state.movieList));
   const getConfig = () => {
     axios
       .get(
@@ -18,32 +25,31 @@ function App() {
       .then(res => setConfig(res.data));
   };
 
-  const getData = async (currentPage = page) => {
-    setisLoading(true);
+  async function getData(currentPage = page) {
+    dispatch(setLoader(true));
     let url = '';
     if (search) {
       url = `https://api.themoviedb.org/3/search/movie?query=${search}&include_adult=false&language=en-US&page=${
-        currentPage + 1
+        page + 1
       }`;
     } else {
       url = `https://api.themoviedb.org/3/discover/movie?page=${
-        currentPage + 1
+        page + 1
       }`;
     }
-    const req = await axios.get(url, {
-      headers: {
-        accept: 'application/json',
-        Authorization: `Bearer ${process.env.REACT_APP_READ_TOKEN}`,
-      },
-    });
-    setisLoading(false);
-    setPage(req.data.page);
-    if (currentPage === 0) {
-      setList([...req.data.results]);
-    } else {
-      setList([...list, ...req.data.results]);
-    }
-  };
+    dispatch(fetchMovies(url));
+  }
+
+  async function getSearchData() {
+    dispatch(setLoader(true));
+    let url = '';
+    if (search) {
+      url = `https://api.themoviedb.org/3/search/movie?query=${search}&include_adult=false&language=en-US&page=${
+        1
+      }`;
+      dispatch(fetchMovies(url));
+    } 
+  }
 
   const handleScroll = () => {
     if (
@@ -53,46 +59,49 @@ function App() {
     ) {
       return;
     }
-    getData();
+    getData(page+1);
   };
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-    // eslint-disable-next-line 
+    // eslint-disable-next-line
   }, [isLoading]);
 
   useEffect(() => {
     getData();
     getConfig();
-    // eslint-disable-next-line 
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
-    getData(0);
-    // eslint-disable-next-line 
+    getSearchData();
+    // eslint-disable-next-line
   }, [search]);
 
   const handleFocus = () => {
-    console.log('focus');
     if (search === '') {
-      setList([]);
-      setPage(0);
+      dispatch(setPage(0));
     }
   };
 
   return (
-    <div className='App'>
-      <input
-        type='text'
-        name=''
-        id=''
-        value={search}
-        onChange={e => setSearch(e.target.value)}
-        onFocus={handleFocus}
-      />
-      <MovieList movies={list} config={config} />
-    </div>
+    <BrowserRouter>
+      <div className='App'>
+        <Header
+          search={search}
+          setSearch={setSearch}
+          handleFocus={handleFocus}
+        />
+        <Routes>
+          <Route
+            path='/'
+            element={<MovieList movies={list} config={config} />}
+          />
+          <Route path='/movies/:id' element={<MovieDetail />} config={config} />
+        </Routes>
+      </div>
+    </BrowserRouter>
   );
 }
 
