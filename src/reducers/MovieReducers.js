@@ -31,9 +31,7 @@ export const movieSlice = createSlice({
     },
   },
   extraReducers: builder => {
-    // Add reducers for additional action types here, and handle loading state as needed
     builder.addCase(fetchMovies.fulfilled, (state, action) => {
-      // Add user to the state array
       if (Array.isArray(action.payload.results)) {
         if (current(state).pageNo > 1) {
           state.movieList.push(...action.payload.results);
@@ -47,7 +45,6 @@ export const movieSlice = createSlice({
   },
 });
 
-// Action creators are generated for each case reducer function
 export const { setPage, setLoader } = movieSlice.actions;
 
 export default movieSlice.reducer;

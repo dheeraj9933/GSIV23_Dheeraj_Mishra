@@ -1,0 +1,50 @@
+
+nav {
+    margin-bottom: 10px;
+    padding: 10px 40px;
+    display: flex;
+    justify-content: space-between;
+    box-shadow: 1px 2px 2px 1px #aaa;
+    align-items: center;
+    .search-container {
+      flex-basis: 500px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 5px 10px;
+      display: flex;
+      img {
+        margin-right: 5px;
+      }
+      input {
+        border: none;
+        outline: none;
+        flex-grow: 1;
+        font-size: 18px;
+      }
+    }
+    .search {
+      width: 24px;
+      height: 24px;
+    }
+    .cross {
+      cursor: pointer;
+      width: 24px;
+      height: 24px;
+    }
+    .home {
+      margin-left: 20px;
+    }
+    h1 {
+      margin: 5px 0;
+      font-size: 1.4rem;
+    }
+    @media screen and (max-width: 540px) {
+      padding: 10px;
+      .search-container {
+        flex-basis: auto
+      }
+      .home {
+        margin-left: 5px;
+      }
+    }
+  }

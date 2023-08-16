@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 
 import { useSelector } from 'react-redux';
 import DefaultImge from '../../assets/default.jpg'
+import './style.scss'
 
 function MovieList({ movies }) {
   const config = useSelector(state => state.config.config);
@@ -15,10 +16,10 @@ function MovieList({ movies }) {
                 {movie.poster_path ? (
                   <img
                     src={`${config?.images?.base_url}/w342/${movie.poster_path}`}
-                    alt=''
+                    alt='movie-poster'
                   />
                 ) : (
-                  <img src={DefaultImge} />
+                  <img src={DefaultImge} alt='no-poster-found' />
                 )}
               </figure>
               <div className='desc'>

@@ -1,12 +1,12 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-
 import { useDispatch, useSelector } from 'react-redux';
 
 import Loader from '../../components/SubmitLoader'
 
 import DefaultImge from '../../assets/default.jpg';
 import { fetchMovieDetail, setLoader } from '../../reducers/MovieDetailReducer';
+import './style.scss'
 
 function MovieDetail() {
   const dispatch = useDispatch();
@@ -14,15 +14,16 @@ function MovieDetail() {
   const { movieDetail: movie, loading } = useSelector(state => state.movieDetail);
 
   const params = useParams();
-  const getMovieData = () => {
+  const getMovieData = useCallback(() => {
     dispatch(setLoader(true));
     const url = `https://api.themoviedb.org/3/movie/${params.id}`;
     dispatch(fetchMovieDetail(url));
-  };
+  }, [params.id, dispatch]);
 
   useEffect(() => {
     getMovieData();
-  }, []);
+  }, [getMovieData]);
+
   return (
     <div className='movie-detail'>
       {movie && !loading ? (
@@ -31,10 +32,10 @@ function MovieDetail() {
             {movie.poster_path ? (
               <img
                 src={`${config?.images?.base_url}/w185/${movie.poster_path}`}
-                alt=''
+                alt='movie-poster'
               />
             ) : (
-              <img src={DefaultImge} />
+              <img src={DefaultImge} alt='no-poster-found' />
             )}
           </figure>
           <div className='movie-desc'>
