@@ -44,7 +44,17 @@ nav {
     margin: 5px 0;
     font-size: 1.4rem;
   }
+  @media screen and (max-width: 540px) {
+    padding: 10px;
+    .search-container {
+      flex-basis: auto
+    }
+    .home {
+      margin-left: 5px;
+    }
+  }
 }
+
 .muted {
   color: #777;
 }
@@ -135,5 +145,17 @@ nav {
   }
   .movie-desc {
     flex-basis: 70%;
+  }
+  @media screen and (max-width: 746px) {
+    flex-flow: column;
+    figure {
+      margin: auto;
+    }    
+    .movie-desc {
+      margin: 0 20px;
+    }
+    h2 {
+      font-size: 1.2rem;
+    }
   }
 }

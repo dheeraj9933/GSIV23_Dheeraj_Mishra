@@ -1,28 +1,22 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
+import Loader from './components/SubmitLoader'
 import MovieList from './components/MovieList';
 import './App.scss';
 import MovieDetail from './pages/MovieDetail';
 import Header from './components/Header';
 import { fetchMovies, setPage, setLoader } from './reducers/MovieReducers';
 import { useDispatch, useSelector } from 'react-redux';
+import { fetchConfig } from './reducers/configReducer';
 
 function App() {
   const [search, setSearch] = useState('');
-  const [config, setConfig] = useState({});
   const dispatch = useDispatch();
   const list = useSelector(state => state.movieList.movieList);
   const page = useSelector(state => state.movieList.pageNo);
   const isLoading = useSelector(state => state.movieList.loading);
-  const getConfig = () => {
-    axios
-      .get(
-        `https://api.themoviedb.org/3/configuration?api_key=${process.env.REACT_APP_API_KEY}`
-      )
-      .then(res => setConfig(res.data));
-  };
+  // const isLoading = useSelector(state => state.movieList.loading);
 
   async function getData(currentPage = page) {
     dispatch(setLoader(true));
@@ -71,7 +65,7 @@ function App() {
 
   useEffect(() => {
     getData();
-    getConfig();
+    dispatch(fetchConfig())
     // eslint-disable-next-line
   }, []);
 
@@ -89,6 +83,7 @@ function App() {
   return (
     <BrowserRouter>
       <div className='App'>
+        {isLoading && <Loader />}
         <Header
           search={search}
           setSearch={setSearch}
@@ -97,9 +92,9 @@ function App() {
         <Routes>
           <Route
             path='/'
-            element={<MovieList movies={list} config={config} />}
+            element={<MovieList movies={list} />}
           />
-          <Route path='/movies/:id' element={<MovieDetail />} config={config} />
+          <Route path='/movies/:id' element={<MovieDetail />} />
         </Routes>
       </div>
     </BrowserRouter>

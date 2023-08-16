@@ -1,8 +1,10 @@
 import { Link } from 'react-router-dom';
 
+import { useSelector } from 'react-redux';
 import DefaultImge from '../../assets/default.jpg'
 
-function MovieList({ movies, config }) {
+function MovieList({ movies }) {
+  const config = useSelector(state => state.config.config);
   return (
     <ul className='movie-list'>
       {Array.isArray(movies) && movies.length ? movies.map((movie, index) => {

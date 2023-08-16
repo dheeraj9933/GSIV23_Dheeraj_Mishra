@@ -3,7 +3,7 @@ import { createSlice, createAsyncThunk, current } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 export const fetchMovies = createAsyncThunk(
-  'users/fetchByIdStatus',
+  'fetchMovies',
   async (url, thunkAPI) => {
     const response = await axios.get(url, {
       headers: {
@@ -20,28 +20,29 @@ export const movieSlice = createSlice({
   initialState: {
     movieList: [],
     pageNo: 0,
-    loading: false
+    loading: false,
   },
   reducers: {
     setPage: (state, action) => {
       state.pageNo = action.payload;
     },
     setLoader: (state, action) => {
-      state.loading = action.payload
-    }
+      state.loading = action.payload;
+    },
   },
   extraReducers: builder => {
     // Add reducers for additional action types here, and handle loading state as needed
     builder.addCase(fetchMovies.fulfilled, (state, action) => {
       // Add user to the state array
-      //   state.movieList = action.payload;
-      if (current(state).pageNo <= 1) {
-        state.movieList = [...action.payload.results];
-      } else {
-        state.movieList.push(...action.payload.results);
+      if (Array.isArray(action.payload.results)) {
+        if (current(state).pageNo > 1) {
+          state.movieList.push(...action.payload.results);
+        } else {
+          state.movieList = [...action.payload.results];
+        }
       }
-      state.pageNo = action.payload.page
-      state.loading = false
+      state.pageNo = action.payload.page;
+      state.loading = false;
     });
   },
 });
