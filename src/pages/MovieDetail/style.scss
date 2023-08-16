@@ -1,0 +1,24 @@
+.movie-detail {
+    display: flex;
+    figure {
+      max-width: 185px;
+      img {
+        width: 100%;
+      }
+    }
+    .movie-desc {
+      flex-basis: 70%;
+    }
+    @media screen and (max-width: 746px) {
+      flex-flow: column;
+      figure {
+        margin: auto;
+      }    
+      .movie-desc {
+        margin: 0 20px;
+      }
+      h2 {
+        font-size: 1.2rem;
+      }
+    }
+  }
