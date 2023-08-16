@@ -4,6 +4,7 @@ This is a simple react-redux project that uses themoviedb.org api to create a si
 
 ## Instructions to run
 
+URL: https://movie-db-dheeraj.netlify.app/
 Pages : 
 HomePage : This page is a combination of default listing and search page where search results are dynamically updated upon typing.
 DetailPage: Upon clicking on any movie you will be taken to movie detail page
