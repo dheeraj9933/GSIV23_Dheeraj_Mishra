@@ -12,4 +12,5 @@ DetailPage: Upon clicking on any movie you will be taken to movie detail page
 1. I have created small resuable components that make the project easily understable and debuggable
 2. Added small animations for hover and loading
 3. used redux as and when needed
-4. If I had more time would have liked to add test cases
+4. Responsive CSS done
+5. If I had more time would have liked to add test cases
